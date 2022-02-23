@@ -1,13 +1,16 @@
 package edu.cmich.cps542;
 
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+
 public class DFSConnectedComponentFinder {
 
 	public static void main(String[] args) {
 
-		int size = 9;
 		String edgeSpecifier = ("0-1,1-2,2-3,2-0,2-5,4-5,5-4,2-4");
 		boolean directed = true;
-		Graph g = new Graph(size,edgeSpecifier,directed);
+		Graph g = new Graph(9,edgeSpecifier,directed);
 		Integer[] labels = findConnectedComponentsWDFS(g);
 	}
 
@@ -26,23 +29,26 @@ public class DFSConnectedComponentFinder {
 
 		int transpose[][]=new int[size][size];  //transposed matrix
 
-		//Code to transpose the adjMatrix
+		//Code to transpose adjMatrix
 		for(int i=0;i<size;i++) {
 			for (int j = 0; j < size; j++) {
 				transpose[i][j] = adjMatrix[j][i];
 			}
 		}
 
-		printMatrix(adjMatrix);
+		//printMatrix(adjMatrix);  //method used to print a 2D matrix
 
 		int componentID = 0;
 		Integer[] componentMembership = new Integer[g.size()];
 
 		Integer[] order = null;
-		order = BFS.ProcessOrderInBFS(g);
+		order = DFS.ProcessOrderInDFS(g);
 
-		int k = BFS.bfs(g,0, 0,order);
-		//System.out.println("k = " + k);
+		for(int i = 0; i< order.length;i++){
+			System.out.println(order[i]);
+		}
+
+		int k = DFS.dfs(g,0, 0,order);
 
 		for(int i = 0; i< order.length;i++){
 			System.out.println(order[i]);
@@ -62,3 +68,4 @@ public class DFSConnectedComponentFinder {
 
 	
 }
+

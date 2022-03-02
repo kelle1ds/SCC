@@ -24,7 +24,7 @@ class StronglyConnectedComponents
         String edgeSpecifier = ("0-1,1-2,2-0,2-3,1-4,2-5,4-5,5-4");
         int size = 6;
         boolean directed = true;
-        Graph g = new Graph(size,edgeSpecifier,directed);
+        Graph g = new Graph(size,edgeSpecifier,directed); //New Graph
         stronglyConnected(g);
     }
 
@@ -37,7 +37,7 @@ class StronglyConnectedComponents
         Integer[][] adjMatrix = g.getAdjMatrix();  //adjMatrix create from Graph object
 
         //adjList from adjMatrix method.  Returns a List<List<Integer>>
-        adjList = adjList(g.getAdjMatrix());
+        adjList = adjList(g.getAdjMatrix());  //Public
 
         //Create Boolean Visited array and set all to false
         boolean [] visited = new boolean[adjMatrix.length];

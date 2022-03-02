@@ -1,50 +1,72 @@
 package edu.cmich.cps542;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+
 public class DFSConnectedComponentFinder {
 
-	/** 
-	 * Labels the connected components in a graph such that all 
-	 *   members of a connected component of the graph share the same
-	 *   label.  Traverses graph in a depth-first manner.
-	 * 
-	 * @param g the graph in which to identify connected components
-	 * @return labels for each vertex in the graph denoting connected component membership
-	 */
-
 	public static void main(String[] args) {
-		int size = 9;
-		String edgeSpecifier = ("0-1,1-2,2-3,3-0,2-4,4-5,5-6,6-4,7-6,7-8");
 
+		String edgeSpecifier = ("0-1,1-2,1-9,2-3,2-4,4-5,4-6,6-7,7-8,9-10,10-11");
+		int size = 12;
 		boolean directed = true;
 		Graph g = new Graph(size,edgeSpecifier,directed);
-		Integer[] order = null;
-		order = BFS.ProcessOrderInBFS(g);
 
-		Integer[][] adjMatrix = g.getAdjMatrix();
+		System.out.println("Function count: " + count(g));
+		System.out.println(topo(g));
+	}
 
-		int transpose[][]=new int[size][size];
-		//Code to transpose a matrix
-		for(int i=0;i<size;i++) {
-			for (int j = 0; j < size; j++) {
-				transpose[i][j] = adjMatrix[j][i];
+	public static ArrayList topo(Graph g){
+		int[] inEdges = new int[g.size];
+		Queue<Integer> q = new LinkedList<Integer>();
+		ArrayList<Integer> sortOrder = new ArrayList<Integer>();
+		int basic = 0;
+		for(int i = 0; i < inEdges.length; i++){
+			inEdges[i] = 0;
+			basic++;
+		}
+		for(int i = 0; i < inEdges.length;i++){
+			g.getAdjList(i).stream().forEach((x) -> inEdges[x]++);
+			basic++;
+		}
+		for(int i = 0; i < inEdges.length;i++){
+			basic++;
+			if(inEdges[i] == 0){
+				q.add(i);   //Queue with sources
 			}
 		}
-
-		for(int i = 0; i < size;i++){
-			for(int j = 0; j < size; j++)
-				System.out.println(transpose[i][j] + " " + adjMatrix[i][j]);
+		System.out.println("For loops = " + basic);
+		int basic2 = 0;
+		while(!q.isEmpty()){
+			int currVertex = q.remove();
+			sortOrder.add(currVertex);
+			ArrayList<Integer> adjList = g.getAdjList(currVertex);
+			for(Integer adjVertex : adjList){
+				inEdges[adjVertex]--;
+				basic2++;
+				if(inEdges[adjVertex] ==0){
+					q.add(adjVertex);
+				}
+			}
 		}
+		System.out.println("While loops = " + basic2);
 
+		return sortOrder;
 	}
 
-	public static Integer[] findConnectedComponentsWDFS(Graph g) {
-
-		int componentID = 0;
-		Integer[] componentMembership = new Integer[g.size()]; 
-
-		
-		return componentMembership;
+	public static int count(Graph g){
+		int b = 3*g.size() + g.size()-1;
+		return b;
 	}
 
-	
+
+
+
+
+
 }
+
